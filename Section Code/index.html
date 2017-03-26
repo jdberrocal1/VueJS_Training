@@ -15,9 +15,14 @@
 		<hr>
 		<p v-html="finishedLink"></p>
 
-		<button v-on:click="click">Click Me</button>
+		<button v-on:click="click(2, $event)">Click Me</button>
 		<p>{{ counter }}</p>
-		<p v-on:mousemove="updateCoordinates">Coordinates: {{ x }} / {{ y }}</p>
+		<p v-on:mousemove="updateCoordinates">
+			Coordinates: {{ x }} / {{ y }}
+			- <span v-on:mousemove.stop="">Dead Spot</span>
+		</p>
+
+		<input type="text" v-on:keyup.enter="alertMe"></input>
 	</div>
 	<script>
 	// You may of course also outsource this script code into a separate file (e.g. app.js) and simply import this file here
@@ -38,12 +43,15 @@
 				sayHello: function() {
 					return {a: 'Hello'};
 				},
-				click: function(){
-					this.counter +=1;
+				click: function(x, event){
+					this.counter += x;
 				},
 				updateCoordinates: function(event){
 					this.x = event.clientX;
 					this.y = event.clientY;
+				},
+				alertMe: function() {
+					alert();
 				}
 			}
 		})
