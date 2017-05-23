@@ -28,6 +28,7 @@
 <script>
     import UserDetail from './UserDetail.vue';
     import UserEdit from './UserEdit.vue';
+    import {eventBus} from '../main';
 
     export default {
         data: function() {
@@ -53,6 +54,14 @@
         components: {
             appUserDetail: UserDetail,
             appUserEdit: UserEdit
+        },
+        created() {
+           eventBus.$on('updateUserAge', (data) => {
+               this.age = data;
+           });
+           eventBus.$on('nameWasChanged', (data) => {
+               this.name = data;
+           }); 
         }
     }
 </script>

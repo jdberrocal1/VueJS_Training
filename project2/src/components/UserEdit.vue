@@ -9,6 +9,8 @@
 </template>
 
 <script>
+    import {eventBus} from '../main';
+
     export default {
         props: {
             name: {
@@ -22,13 +24,12 @@
         methods: {
             editAge() {
                 this.age += 1;
-                this.$emit('updateUserAge', this.age);
+                eventBus.setAge(this.age);
             },
             reverse() {
                 this.name = this.name.split('').reverse().join('');
-                this.$emit('nameWasChanged', this.name);
+                eventBus.setName( this.name);
             }
-
         }
     }
 </script>
