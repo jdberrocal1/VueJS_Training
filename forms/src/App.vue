@@ -1,25 +1,31 @@
 <template>
     <div class="container">
-        <form>
+        <form name="dataForm">
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                     <h1>File a Complaint</h1>
                     <hr>
-                    <div class="form-group">
+                     <div class="form-group" :class="{'has-error': errors.has('email') }">
                         <label for="email">Mail</label>
                         <input
-                                type="text"
+                                type="email"
                                 id="email"
+                                name="email"
                                 class="form-control"
-                                v-model="userData.email">
+                                v-model="userData.email"
+                                v-validate="{ rules: { required: true, email: true } }">
+                                <p class="text-danger" v-if="errors.has('email')">{{ errors.first('email') }}</p>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" :class="{'has-error': errors.has('password') }">
                         <label for="password">Password</label>
                         <input
                                 type="password"
                                 id="password"
+                                name="password"
                                 class="form-control"
-                                v-model="userData.password">
+                                v-model="userData.password"
+                                v-validate="{ rules: { required: true, min:8, max:16 } }">
+                                <p class="text-danger" v-if="errors.has('password')">{{ errors.first('password') }}</p>
                     </div>
                     <div class="form-group">
                         <label for="age">Age</label>
@@ -93,17 +99,25 @@
                     </select>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+                    <app-switch v-model="dataSwitch"></app-switch>
+                </div>
+            </div>
             <hr>
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                     <button
-                            class="btn btn-primary">Submit!
+                            class="btn btn-primary"
+                            @click.prevent="submit"
+                            :disabled="isFormInvalid">
+                                Submit!
                     </button>
                 </div>
             </div>
         </form>
         <hr>
-        <div class="row">
+        <div class="row" v-if="isDataSubmited">
             <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -120,7 +134,7 @@
                         </ul>
                         <p>Gender: {{userData.gender}}</p>
                         <p>Priority: {{prioritySelected}}</p>
-                        <p>Switched:</p>
+                        <p>Switched: {{dataSwitch ? 'Yes':'No'}}</p>
                     </div>
                 </div>
             </div>
@@ -129,6 +143,7 @@
 </template>
 
 <script>
+    import Switch from './Switch.vue';
     export default {
         data(){
             return {
@@ -141,9 +156,23 @@
                 message:'',
                 sendMail:[],
                 priorityOptions:['High','Medium','Low'],
-                prioritySelected:'Low'
-                
+                prioritySelected:'Low',
+                dataSwitch: true,
+                isDataSubmited: false                
             };
+        },
+        methods:{
+            submit() {
+                this.isDataSubmited = true;
+            }
+        },
+        computed: {
+            isFormInvalid() {
+                return Object.keys(this.fields).filter(key => !this.fields[key].valid).length > 0;
+            }
+        },
+        components:{
+            appSwitch: Switch
         }
     }
 </script>
