@@ -35,6 +35,14 @@
                                 class="form-control"
                                 v-model="userData.age">
                     </div>
+                    <div class="form-group">
+                        <label for="age">Date</label>
+                        <input
+                                type="date"
+                                id="date"
+                                class="form-control"
+                                v-model="date">
+                    </div>
 
                 </div>
             </div>
@@ -112,33 +120,37 @@
                             @click.prevent="submit"
                             :disabled="isFormInvalid">
                                 Submit!
-                    </button>
+                    </button> 
                 </div>
             </div>
         </form>
         <hr>
-        <div class="row" v-if="isDataSubmited">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4>Your Data</h4>
-                    </div>
-                    <div class="panel-body">
-                        <p>Mail: {{userData.email}}</p>
-                        <p>Password: {{userData.password}}</p>
-                        <p>Age: {{userData.age}}</p>
-                        <p>Message: {{message}}</p>
-                        <p><strong>Send Mail?</strong></p>
-                        <ul>
-                            <li v-for="mail in sendMail">{{mail}}</li>
-                        </ul>
-                        <p>Gender: {{userData.gender}}</p>
-                        <p>Priority: {{prioritySelected}}</p>
-                        <p>Switched: {{dataSwitch ? 'Yes':'No'}}</p>
+        <transition name="fade">
+            <div class="row" v-if="isDataSubmited">
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>Your Data</h4>
+                        </div>
+                        <div class="panel-body">
+                            <p>Mail: {{userData.email}}</p>
+                            <p>Password: {{userData.password}}</p>
+                            <p>Age: {{userData.age}}</p>
+                            <p>Date: {{date | formatDate}}</p>
+                            
+                            <p>Message: {{message}}</p>
+                            <p><strong>Send Mail?</strong></p>
+                            <ul>
+                                <li v-for="mail in sendMail">{{mail}}</li>
+                            </ul>
+                            <p>Gender: {{userData.gender}}</p>
+                            <p>Priority: {{prioritySelected}}</p>
+                            <p>Switched: {{dataSwitch ? 'Yes':'No'}}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </transition>
     </div>
 </template>
 
@@ -153,6 +165,7 @@
                     age: '',
                     gender:'Male'
                 },
+                date:'',
                 message:'',
                 sendMail:[],
                 priorityOptions:['High','Medium','Low'],
@@ -178,5 +191,20 @@
 </script>
 
 <style>
+    .fade-enter {
+        opacity: 0;
+    }
 
+    .fade-enter-active {
+        transition: opacity 0.5s;
+    }
+
+    .fade-leave {
+        
+    }
+
+    .fade-leave-active {
+        transition: opacity 0.5s;
+        opacity: 0;
+    }
 </style>
