@@ -1,34 +1,29 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import counter from './modules/counter';
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        counter: 0
+        clicks:0
     },
     getters: {
-        _getCounter: state => {
-            return state.counter;
+        _getClicks: state => {
+            return state.clicks;
         },
-        _getDoubleCounter: state => {
-            return state.counter * 2;
-        }
     },
     mutations: {
-        _incrementCounterMut: (state, payload) => {
-            state.counter += payload;
-        },
-        _decrementCounterMut: (state, payload) => {
-            state.counter -= payload;
+        _addClicksMut: (state, payload) => {
+            state.clicks += payload;
         }
     },
     actions: {
-        _incrementCounterAct: (context, payload) => {
-            context.commit('_incrementCounterMut', payload)
-        },
-        _decrementCounterAct: (context, payload) => {
-            context.commit('_decrementCounterMut', payload)
+        _addClicksAct: (context, payload) => {
+            context.commit('_addClicksMut',payload);
         }
+    },
+    modules: {
+        counter
     }
 });

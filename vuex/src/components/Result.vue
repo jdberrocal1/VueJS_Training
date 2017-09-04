@@ -2,6 +2,7 @@
     <div>
         <p>Counter is: {{ counter }}</p>
         <p>Double Counter is: {{ doubleCounter }}</p>
+        <p>Clicks: {{ clicks }}</p>
     </div>
 </template>
 
@@ -11,7 +12,8 @@
         computed: {
             ...mapGetters({
                 counter:'_getCounter',
-                doubleCounter: '_getDoubleCounter'
+                doubleCounter: '_getDoubleCounter',
+                clicks: '_getClicks'
             })
         }
     }
