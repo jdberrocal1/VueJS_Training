@@ -1,16 +1,23 @@
 <template>
-    <div class="container">
-        <h1>Portfolio Component</h1>
+    <div class="row">
+      <appStock v-for="stock in stocks" :stock="stock"></appStock>
     </div>
 </template>
 
 <script>
-
-    export default {
-
+import stock from './stock.vue';
+export default {
+  computed:{
+    stocks(){
+      return this.$store.getters.stocksPortfolio;
     }
+  },
+  components:{
+    appStock: stock
+  }
+}
 </script>
 
 <style>
 
-</style>
+</style>s
