@@ -22,7 +22,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <strong class="navbar-text whiteTxt">
-            Funds: ${{funds}}
+            Funds: {{funds | currency}}
           </strong>
           <li>
             <a href="#">End Day</a>
