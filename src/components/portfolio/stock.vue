@@ -1,6 +1,6 @@
 <template>
   <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-    <div class="panel panel-success">
+    <div class="panel panel-info">
       <div class="panel-heading">
         <h3 class="panel-title">
           {{stock.name}}
@@ -8,13 +8,15 @@
         </h3>
       </div>
       <div class="panel-body">
-        <div class="pull-left">
-          <input type="number" class="form-control" placeholder="Quantity" v-model="quantity">
-        </div>
-        <div class="pull-right">
-          <button class="btn btn-success" @click="sell" :disabled="quantity <= 0">
-            Sell
-          </button>
+        <div class="row">
+          <div class="col-xs-4">
+            <input type="number" class="form-control" placeholder="Quantity" v-model="quantity" :class="{'error': insufficientQuantity}">
+          </div>
+          <div class="col-xs-8">
+            <button class="btn btn-info pull-right" :class="{'btn-danger': insufficientQuantity}" @click="sell" :disabled="quantity <= 0 || insufficientQuantity">
+              {{insufficientQuantity ? 'Not Enough Stocks' : 'Sell'}}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -27,6 +29,11 @@ export default {
   data() {
     return {
       quantity: 0
+    }
+  },
+  computed:{
+    insufficientQuantity(){
+      return this.quantity > this.stock.quantity;
     }
   },
   methods: {
@@ -43,6 +50,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  input.form-control.error, input.error {
+    border: 1px solid red;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(139,32,0,.6);
+  }
 </style>

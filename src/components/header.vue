@@ -21,6 +21,9 @@
           </router-link>
         </ul>
         <ul class="nav navbar-nav navbar-right">
+          <strong class="navbar-text whiteTxt">
+            Funds: ${{funds}}
+          </strong>
           <li>
             <a href="#">End Day</a>
           </li>
@@ -49,6 +52,11 @@
 <script>
 
 export default {
+  computed:{
+    funds(){
+      return this.$store.getters.funds;
+    }
+  }
 
 }
 </script>
@@ -63,7 +71,7 @@ export default {
     border-right: 0;
   }
 
-  .darkNav a {
+  .darkNav a, .darkNav .whiteTxt {
     color: white;
   }
 
