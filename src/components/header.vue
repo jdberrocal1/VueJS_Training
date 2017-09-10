@@ -1,5 +1,6 @@
 <template>
   <nav class="navbar darkNav">
+    <app-loading v-if="loading"></app-loading>
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -27,17 +28,17 @@
           <li>
             <a @click="endDay">End Day</a>
           </li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <li class="dropdown" :class="{open: isDropdownOpen}" @click="isDropdownOpen = !isDropdownOpen">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               Save & Load
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
               <li>
-                <a href="#">Save Data</a>
+                <a @click="saveData">Save Data</a>
               </li>
               <li>
-                <a href="#">Load Data</a>
+                <a @click="loadData">Load Data</a>
               </li>
             </ul>
           </li>
@@ -52,6 +53,12 @@
 <script>
 
 export default {
+  data() {
+    return {
+      isDropdownOpen: false,
+      loading: false
+    }
+  },
   computed:{
     funds(){
       return this.$store.getters.funds;
@@ -60,6 +67,21 @@ export default {
   methods:{
     endDay(){
       this.$store.dispatch('randomizeStocks');
+    },
+    saveData() {
+      this.loading = true;
+      const data = {
+        funds: this.funds,
+        stockPorfolio: this.$store.getters.stocksPortfolio,
+        stocks: this.$store.getters.stocks
+      };
+      this.$http.put('stocks.json', data)
+        .finally(()=>{
+          this.loading = false;
+        })
+    },
+    loadData() {
+      
     }
   }
 
@@ -80,7 +102,7 @@ export default {
     color: white;
   }
 
-   .darkNav li>a:hover, .darkNav li>a:focus, .darkNav li.active > a  {
+   .darkNav li>a:hover, .darkNav li>a:focus, .darkNav li.active > a,  .darkNav li.open > a {
     background-color: #00FF0E;
     color: #1B1D1E;
   }
