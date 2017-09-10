@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar darkNav">
-    <app-loading v-if="loading"></app-loading>
+    <app-loading v-if="isLoading"></app-loading>
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -55,13 +55,15 @@
 export default {
   data() {
     return {
-      isDropdownOpen: false,
-      loading: false
+      isDropdownOpen: false
     }
   },
   computed:{
     funds(){
       return this.$store.getters.funds;
+    },
+    isLoading() {
+      return this.$store.getters.isLoading;
     }
   },
   methods:{
@@ -69,19 +71,19 @@ export default {
       this.$store.dispatch('randomizeStocks');
     },
     saveData() {
-      this.loading = true;
+      this.$store.dispatch('isLoading', true);
       const data = {
         funds: this.funds,
-        stockPorfolio: this.$store.getters.stocksPortfolio,
+        stockPortfolio: this.$store.getters.stocksPortfolio,
         stocks: this.$store.getters.stocks
       };
       this.$http.put('stocks.json', data)
         .finally(()=>{
-          this.loading = false;
-        })
+          this.$store.dispatch('isLoading', false);
+        });
     },
     loadData() {
-      
+      this.$store.dispatch('loadData');
     }
   }
 
