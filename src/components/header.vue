@@ -3,7 +3,7 @@
     <app-loading v-if="isLoading"></app-loading>
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" @click="showMenu = !showMenu">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -12,7 +12,7 @@
         <router-link to='/' class="navbar-brand">Stock Trader</router-link>
       </div>
 
-      <div class="collapse navbar-collapse">
+      <div class="collapse navbar-collapse" :class="{'in': showMenu}">
         <ul class="nav navbar-nav">
           <router-link to="/portfolio" activeClass="active" tag="li">
             <a>Portfolio</a>
@@ -55,7 +55,8 @@
 export default {
   data() {
     return {
-      isDropdownOpen: false
+      isDropdownOpen: false,
+      showMenu: false
     }
   },
   computed:{
@@ -102,6 +103,10 @@ export default {
 
   .darkNav a, .darkNav .whiteTxt {
     color: white;
+  }
+
+  .darkNav span.icon-bar{
+    background-color: #00FF0E;
   }
 
    .darkNav li>a:hover, .darkNav li>a:focus, .darkNav li.active > a,  .darkNav li.open > a {
